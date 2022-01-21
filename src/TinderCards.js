@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import SwipeButtons from "./SwipeButtons"
-import database from "./firebase"
+import {database} from "./firebase"
 import TinderCard from 'react-tinder-card'
 import "./TinderCards.css"
 
