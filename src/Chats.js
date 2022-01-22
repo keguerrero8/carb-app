@@ -1,10 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react'
 import Chat from "./Chat"
-import {database} from "./firebase"
-
-
-
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import "./Chats.css"
 
 const Chats = ({ user }) => {

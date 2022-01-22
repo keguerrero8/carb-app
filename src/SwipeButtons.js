@@ -14,7 +14,7 @@ const SwipeButtons = () => {
             <IconButton className="swipeButtons__repeat">
                <ReplayIcon fontSize="large" /> 
             </IconButton>
-            <IconButton className="swipeButtons__left">
+            <IconButton  className="swipeButtons__left">
                <CloseIcon fontSize="large" /> 
             </IconButton>
             <IconButton className="swipeButtons__star">
