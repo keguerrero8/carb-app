@@ -30,7 +30,7 @@ const Header = ({ backButton, rubyUser }) => {
             <img 
             className="header__logo"
             src={logo2} 
-            alt="CARB Logo"/>
+            alt="testing commit"/>
             </Link>
             <Link to="/info">
             <IconButton>
