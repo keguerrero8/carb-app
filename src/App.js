@@ -25,6 +25,7 @@ function App() {
   const [restaurants, setRestaurants] = useState([])
   const [matches, setMatches] = useState([])
   const [refreshPage, setRefreshPage] =useState("")
+  const [conversations, setConversations] = useState({})
 
 function onDeleteRestaurant(newRestaurant){
   const newList = restaurants.filter((item) => item.id !== newRestaurant.id)
@@ -50,6 +51,12 @@ useEffect(() => {
         console.log(data)
         setMatches(data)
     },)
+    fetch('http://localhost:9292/conversations')
+    .then((r)=> r.json())
+    .then((data) => {
+        console.log(data)
+        setConversations(data)
+    },)
 }, [])
 
 function refresh(){
@@ -67,8 +74,8 @@ function refresh(){
           <Route path="/info" element = {<><Header backButton="/"/><Info refresh={refresh} restaurants={restaurants} usersList={usersList} onDeleteRestaurant={onDeleteRestaurant} matches={matches}/></>}/>
           <Route path="/signup" element = {<><Header backButton="/"/><SignUp/></>}/>
           <Route path="/signin" element= {<><Header backButton="/"/><SignIn handleUser={handleUser} user={user}/></>} />
-          <Route path="/chat/:person" element={<><Header backButton="/chat"/><ChatScreen user={user}/></>}/>
-          <Route path="/chat" element={<><Header backButton="/"/><Chats user={user} /></>} />
+          <Route path="/chat/:conversation_id" element={<><Header backButton="/chat"/><ChatScreen user={user}/></>}/>
+          <Route path="/chat" element={<><Header backButton="/"/><Chats conversations={conversations} user={user} /></>} />
           <Route path="/" element={<><Header /><TinderCards restaurants={restaurants}/></>} />
         </Routes>
       </Router>

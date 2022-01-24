@@ -1,11 +1,14 @@
-import React, {useState } from 'react'
+import React, {useState, useEffect } from 'react'
+import {useParams} from "react-router-dom"
 import "./ChatScreen.css"
 import Avatar from '@mui/material/Avatar'
 
 
 
-const ChatScreen = () => {
+const ChatScreen = ({conversation}) => {
+  const {conversation_id} = useParams();
   const [input, setInput] = useState("")
+  const [convoUsers, setconvoUsers] = useState({})
   const [messages,setMessages] = useState([
     {
       name: "Date",
@@ -46,8 +49,22 @@ const [messageResponses, setMessageResponses] = useState([
     message: "We shouldn't be together anymore.",
   },
 ])
-
 const [counter, setCounter] = useState(0)
+
+useEffect(() => {
+  fetch(`http://localhost:9292/messages/${conversation_id}`)
+  .then((r)=> r.json())
+  .then((usrs) => {
+      console.log("This is our users data:")
+      setMessages(usrs)
+  },)
+  fetch(`http://localhost:9292/conversations/${conversation_id}`)
+  .then((r)=> r.json())
+  .then((usrs) => {
+      console.log("This is our users data:")
+      setconvoUsers(usrs)
+  },)
+}, [])
 
   const handleSend = e => {
     e.preventDefault();
@@ -73,14 +90,14 @@ const [counter, setCounter] = useState(0)
   }
   return (
     <div className="chatScreen">
-      <p className="chatScreen__timestamp"> YOU MATCHED WITH DATE ON BUBGER KIRG 1/27/22</p>
+      <p className="chatScreen__timestamp"> YOUR PARAMS</p>
      {messages.map((message) => (
-     message.name ? (
+     (message.sender_id !=1) ? (
       <div className="chatScreen__message">
         <Avatar 
           className="chatScreen__image" 
-          alt={message.name}
-          src={message.image} />
+          alt="Other User"
+          src={convoUsers.profilepic} />
       <p className="chatScreen__text">{message.message}</p>
     </div>) : (
             <div className="chatScreen__message">
