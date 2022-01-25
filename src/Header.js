@@ -13,35 +13,37 @@ const Header = ({ backButton, rubyUser }) => {
     const navigate=useNavigate();
 
     return (
-        //BEM
+
         <div className="header">
             {backButton ? (
                 <IconButton onClick={()=> navigate(-1)}>
                  <ArrowBackIosIcon  className="header__icon" fontSize="large"/>   
                 </IconButton>
                 ) : (
-                    <Link to="/signin">
+                    <Link to="/signup">
                 <IconButton>
                     {rubyUser ? (<Avatar /> ): (<PersonIcon className="header__icon" fontSize='large'/>)}
                 </IconButton> 
                 </Link>
                 )}
-            <Link to="/">
-            <img 
-            className="header__logo"
-            src={logo2} 
-            alt="testing commit"/>
-            </Link>
-            <Link to="/info">
-            <IconButton>
-                <GroupIcon className="header_icon" fontSize="large"/>
-            </IconButton>   
-            </Link>
-            <Link to="/chat">
-            <IconButton>
-                 <ForumIcon className="header__icon" fontSize="large"/>
-            </IconButton>
 
+            <Link to="/">
+                <img 
+                className="header__logo"
+                src={logo2} 
+                alt="testing commit"/>
+            </Link>
+
+            <Link to="/info">
+                <IconButton>
+                    <GroupIcon className="header_icon" fontSize="large"/>
+                </IconButton>   
+            </Link>
+
+            <Link to="/chat">
+                <IconButton>
+                    <ForumIcon className="header__icon" fontSize="large"/>
+                </IconButton>
             </Link>
 
 
@@ -50,3 +52,4 @@ const Header = ({ backButton, rubyUser }) => {
 }
 
 export default Header
+
