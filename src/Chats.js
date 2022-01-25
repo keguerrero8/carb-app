@@ -13,6 +13,7 @@ const Chats = ({ conversations, user }) => {
 
        {conversations.map(conversation => (
     <Chat
+        key={conversation.id}
         conversation={conversation}
         id={conversation.user_two_id}
         name={conversation.name}

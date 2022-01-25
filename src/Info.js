@@ -15,12 +15,12 @@ return (
     <div className="restaurants">
     <p> What are our restaurants for this app?</p>
     <ol>
-       {restaurants.map((prjct, index) =><li>{prjct.name}</li>)} 
+       {restaurants.map((prjct, index) =><li key={index}>{prjct.name}</li>)} 
     </ol>
     
     <p> What are your matches with your partner?</p>
     <ol>
-       {matches.map(match => <li>{match}</li>)} 
+       {matches.map((match, index) => <li key={index}>{match}</li>)} 
     </ol>
     <button onClick={refresh} >Refresh (currently not working)</button>
     
