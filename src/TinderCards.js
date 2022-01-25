@@ -11,11 +11,9 @@ import "./TinderCards.css"
 const TinderCards = ({restaurants}) => {
     const [currentIndex, setCurrentIndex] = useState(restaurants.length - 1)
     const [lastDirection, setLastDirection] = useState()
-    // used for outOfFrame closure
     const currentIndexRef = useRef(currentIndex)
-    //{current : currentIndex}, value that can be updated between re-renders but does not actually re-render page
-   
-    const childRefs = useMemo( //it will store values/memoization so it isnt slow when output is the same
+    
+    const childRefs = useMemo( 
         () =>
           Array(restaurants.length)
             .fill(0)
@@ -33,24 +31,30 @@ const TinderCards = ({restaurants}) => {
       const canSwipe = currentIndex >= 0
     
       // set last direction and decrease current index
-      const swiped = (direction, nameToDelete, index) => {
+      const swiped = (direction, index) => {
         setLastDirection(direction)
+
+        if (direction == "right") {
+          // console.log("lets post this index: ", index)
+          fetch("http://localhost:9292/likes", {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json",
+            },
+            body: JSON.stringify({
+                restaurant_id: index + 1,
+                user_id: 1 //fixed for now
+            })
+          })
+          .then((r) => r.json())
+          .then((newUser) => console.log(newUser));
+        }
+
         updateCurrentIndex(index - 1)
-        // fetch("http://localhost:9292/likes", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type":"application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         restaurant_id: index+1
-        //     })
-        // })
-        // .then((r) => r.json())
-        // .then((newUser) => console.log(newUser));
       }
 
       const outOfFrame = (name, idx) => {
-        console.log(`${name} (${idx}) left the screen!`, currentIndexRef.current)
+        // console.log(`${name} (${idx}) left the screen!`, currentIndexRef.current)
         currentIndexRef.current >= idx && childRefs[idx].current.restoreCard()
       }
     
@@ -60,7 +64,7 @@ const TinderCards = ({restaurants}) => {
         }  
       }
 
-      // increase current index and show card, also used for the back button to return to previous card if mistake is made
+      // increase current index and show card
       const goBack = async () => {
         if (!canGoBack) return
         const newIndex = currentIndex + 1
@@ -68,40 +72,16 @@ const TinderCards = ({restaurants}) => {
         await childRefs[newIndex].current.restoreCard()
       }
 
-      function handleLike () {
-        console.log("we liked this")
-        let index
-        if (currentIndex == -1) {
-          index = restaurants.length-1
-        } else {
-          index = currentIndex
-        }
-        fetch("http://localhost:9292/likes", {
-          method: "POST",
-          headers: {
-              "Content-Type":"application/json",
-          },
-          body: JSON.stringify({
-              restaurant_id: index+1,
-              user_id: 1 //fixed for now
-          })
-        })
-        .then((r) => r.json())
-        .then((newlike) => console.log(newlike));
-      }
-  
-
-
     return (
         <div>
-        <link
+        {/* <link
           href='https://fonts.googleapis.com/css?family=Damion&display=swap'
           rel='stylesheet'
         />
         <link
           href='https://fonts.googleapis.com/css?family=Alatsi&display=swap'
           rel='stylesheet'
-        />
+        /> */}
         <h1 style={{marginBottom : "20px"}} >Lets Taco 'bout it!</h1>
         <div className='tinderCards_cardContainer'>
           {restaurants.map((restaurant, index) => (
@@ -109,7 +89,7 @@ const TinderCards = ({restaurants}) => {
               ref={childRefs[index]} 
               className='swipe'
               key={restaurant.id}
-              onSwipe={(dir) => swiped(dir, restaurant.name, index)}
+              onSwipe={(dir) => swiped(dir, index)}
               onCardLeftScreen={() => outOfFrame(restaurant.name, index)}
             >
               <div
@@ -128,12 +108,9 @@ const TinderCards = ({restaurants}) => {
             <IconButton style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')} className="swipeButtons__left">
                <CloseIcon fontSize="large" /> 
             </IconButton>
-            <IconButton  onClick={() => swipe('right')} className="swipeButtons__right">
+            <IconButton  onClick={() => swipe('right')} className="swipeButtons__right"> 
                <FavoriteIcon fontSize="large" /> 
             </IconButton>
-            {/* <IconButton  onClick={handleLike} className="swipeButtons__right">
-               <FavoriteIcon fontSize="large" /> 
-            </IconButton>              */}
         </div>
       </div>
 
