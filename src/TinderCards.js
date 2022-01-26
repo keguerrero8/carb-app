@@ -8,7 +8,7 @@ import "./SwipeButtons.css"
 import "./TinderCards.css"
 
 
-const TinderCards = ({restaurants}) => {
+const TinderCards = ({restaurants, refresh}) => {
     const [currentIndex, setCurrentIndex] = useState(restaurants.length - 1)
     const [lastDirection, setLastDirection] = useState()
     const currentIndexRef = useRef(currentIndex)
@@ -51,6 +51,7 @@ const TinderCards = ({restaurants}) => {
         }
 
         updateCurrentIndex(index - 1)
+        refresh()
       }
 
       const outOfFrame = (name, idx) => {
